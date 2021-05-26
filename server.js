@@ -1,5 +1,17 @@
 const express = require("express");
+
+// stitches the path together /../..../
+const path = require('path');
 const app = express();
+
+// parses incoming requests, based on body parser 
+const { urlencoded } = require('express');
+app.use(urlencoded({ extended: false }));
+
+//adding router
+app.use(require('./router.js'));
+app.use('/assets', express.static(path.join(__dirname, 'assets')));
+
 const {
     conn,
     seed,
@@ -8,18 +20,6 @@ const {
         Order
     } 
 } = require('./db');
-
-app.get('/api/orders', async (req, res, next) => {
-    try {
-        res.send(await Customer.findAll({ 
-            include: [ Order ]
-        }))
-    }
-    catch(ex) {
-        next(ex);
-    }
-})
-
 
 const run = async() => {
     try {
