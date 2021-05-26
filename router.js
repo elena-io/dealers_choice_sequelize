@@ -25,9 +25,10 @@ router.get('/api/raw-data', async (req, res, next) => {
 
 router.get('/api/customers', async (req, res, next) => {
     try {
-        const customers = await Customer.findAll()
-
-  
+        const customers = await Customer.findAll();
+        const items = await Item.findAll();
+        const orders = await Order.findAll();
+        
         res.send(   
             ` 
             <html>
@@ -40,14 +41,51 @@ router.get('/api/customers', async (req, res, next) => {
                 </nav>
                 <body>
                     <main>
-                        <h1> Sup </h1>
-                        <ul>
-                        
-                            ${
-                                customers.map( customer => customer.name)
-                            }
+                        <h1> Our Guitar Shop Customers </h1>
+                        <section>
+                            <h3> Customers</h3>
+                            <ul>
+                                ${
+                                    customers.map( customer => {
+                                        return `
+                                            <li>
+                                                ${ customer.name }
+                                            </li>
+                                        `
+                                    }).join("")
+                                }
+                            <ul>
+                        </section>
+                        <section>    
+                            <h3> Products </h3>
+                            <ul>
+                                ${
+                                    items.map( item => {
+                                        return `
+                                            <li>
+                                                ${ item.name }
+                                            </li>
+                                        `
+                                    }).join("")
+                                }
+                            <ul>
 
-                        <ul>
+                        </section>
+                        <section>    
+                            <h3> Orders </h3>
+                            <ul>
+                                ${
+                                    customers.map( customer => {
+                                        return `
+                                            <li>
+                                                ${ customer.name }
+                                                
+                                            </li>
+                                        `
+                                    }).join("")
+                                }
+                            <ul>
+
                     </main>
                 </body>
 
